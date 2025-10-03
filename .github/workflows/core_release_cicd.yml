@@ -67,6 +67,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: ./downloaded_artifacts
+      - name: Debug Artifact Directory Structure
+        run: |
+          echo "--- Downloaded Artifact Root ---"
+          ls -R ./downloaded_artifacts
+          echo "--------------------------------"
       - name: Checkout Source Code (for headers)
         uses: actions/checkout@v4
 
