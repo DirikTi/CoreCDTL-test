@@ -48,10 +48,19 @@ jobs:
           cd build
           ctest --output-on-failure || exit 1
 
-      - name: Save Build Artifact
+      - name: Save Linux Build Artifact
+        if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
-          name: core-build-${{ matrix.os }}
+          name: core-linux
+          path: build/
+          retention-days: 1
+
+      - name: Save macOS Build Artifact
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-macos
           path: build/
           retention-days: 1
 
@@ -64,19 +73,14 @@ jobs:
       - name: Download Linux Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: core-build-ubuntu-latest
-          path: ./downloaded_artifacts/core-build-Linux
-
+          name: core-linux
+          path: ./downloaded_artifacts/core-linux
       - name: Download macOS Build Artifact
         uses: actions/download-artifact@v4
         with:
-          name: core-build-macos-latest
-          path: ./downloaded_artifacts/core-build-macOS
-
-      - name: Install Tree for Debugging
-        run: sudo apt-get update && sudo apt-get install -y tree
-
-      - name: Checkout Source Code (for headers)
+          name: core-macos
+          path: ./downloaded_artifacts/core-macos
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
       - name: Package Linux Asset
@@ -85,9 +89,9 @@ jobs:
           RELEASE_TAG=${GITHUB_REF##*/v}
           PACKAGE_NAME="core-${RELEASE_TAG}-linux.tar.gz"
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
-          cp downloaded_artifacts/core-build-Linux/corecdtl-ctl core_release_package/bin/
-          cp downloaded_artifacts/core-build-Linux/libcorecdtl.so core_release_package/lib/
-          cp downloaded_artifacts/core-build-Linux/jit-lib/libjitcore.so core_release_package/lib/
+          cp downloaded_artifacts/core-linux/libcorecdtl.so core_release_package/lib/
+          cp downloaded_artifacts/core-linux/corecdtl-ctl core_release_package/bin/
+          cp downloaded_artifacts/core-linux/jit-lib/libjitcore.so core_release_package/lib/
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
           tar -czf $PACKAGE_NAME -C core_release_package .
@@ -106,9 +110,9 @@ jobs:
           RELEASE_TAG=${GITHUB_REF##*/v}
           PACKAGE_NAME="core-${RELEASE_TAG}-darwin.zip"
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
-          cp downloaded_artifacts/core-build-macOS/corecdtl-ctl core_release_package/bin/
-          cp downloaded_artifacts/core-build-macOS/libcorecdtl.dylib core_release_package/lib/
-          cp downloaded_artifacts/core-build-macOS/jit-lib/libjitcore.dylib core_release_package/lib/
+          cp downloaded_artifacts/core-macos/corecdtl-ctl core_release_package/bin/
+          cp downloaded_artifacts/core-macos/libcorecdtl.dylib core_release_package/lib/
+          cp downloaded_artifacts/core-macos/jit-lib/libjitcore.dylib core_release_package/lib/
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
           cd core_release_package
