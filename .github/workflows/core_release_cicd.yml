@@ -100,6 +100,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ steps.package_linux.outputs.package_name }}
+          tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Download macOS Build Artifact
@@ -126,5 +127,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ steps.package_darwin.outputs.package_name }}
+          tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
