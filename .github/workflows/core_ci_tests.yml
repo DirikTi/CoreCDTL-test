@@ -1,0 +1,46 @@
+name: C Core Project CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential cmake wget lsb-release software-properties-common
+          wget -O - https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
+          sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-20 200
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200
+          sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200
+
+
+      - name: Build project
+        run: |
+          mkdir -p build
+          cd build
+          cmake ..
+          make
+
+      - name: Run Unity Tests
+        run: |
+          cd build
+          echo "➡ Running Unity Tests..."
+          make runTests > test_output.log 2>&1 || true
+          cat test_output.log
+          echo "➡ Running ctest to catch failures..."
+          ctest --output-on-failure || exit 1
+
+      - name: Highlight failed tests
+        if: failure()
+        run: |
+          echo "❌ Some tests failed! See details above."

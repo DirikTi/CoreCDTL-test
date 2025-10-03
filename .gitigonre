@@ -1,0 +1,37 @@
+# ————————————————————————————————————
+# Project Build Files and Directories
+# ————————————————————————————————————
+
+# CMake Build Directories (These should never be committed)
+cmake-build-*/
+build
+
+# ————————————————————————————————————
+# IDE-Specific Files (CLion & VSCode)
+# ————————————————————————————————————
+
+# CLion/IntelliJ IDE files
+.idea/
+
+# VSCode IDE files
+.vscode/
+
+# Editor temporary/swap files
+*.swp
+
+# ————————————————————————————————————
+# Operating System Files
+# ————————————————————————————————————
+
+# macOS (Apple)
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Executables and Libraries (General)
+*.o
+*.a
+*.so
+*.dylib
+*.dll

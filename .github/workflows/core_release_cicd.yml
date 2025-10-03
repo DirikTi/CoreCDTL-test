@@ -1,0 +1,129 @@
+name: C Core Project CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install C/C++ Toolchain (LLVM/Clang)
+        run: |
+          if [[ "${{ runner.os }}" == "Linux" ]]; then
+            sudo apt update
+            sudo apt install -y build-essential cmake wget lsb-release software-properties-common
+            wget -O - https://apt.llvm.org/llvm.sh | sudo bash -s -- 20
+            sudo update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-20 200
+            sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-20 200
+            sudo update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-20 200
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            brew install llvm@20 || true
+
+            LLVM_HOME_PATH="/opt/homebrew/opt/llvm@20"
+            echo "LLVM_HOME=$LLVM_HOME_PATH" >> $GITHUB_ENV
+          
+            LLVM_BIN_PATH="/opt/homebrew/opt/llvm@20/bin"
+            echo "$LLVM_BIN_PATH" >> $GITHUB_PATH
+          fi
+
+      - name: Configure and Build Project
+        run: |
+          mkdir -p build
+          cd build
+          cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
+          make
+
+      - name: Run Tests
+        run: |
+          cd build
+          ctest --output-on-failure || exit 1
+
+      - name: Save Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: core-build-${{ runner.os }}
+          path: build/
+          retention-days: 1
+
+  release:
+    needs: build
+    if: github.event_name == 'release' && github.event.action == 'published'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Linux Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: core-build-Linux
+          path: build-linux
+
+      - name: Download macOS Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: core-build-macOS
+          path: build-macos
+
+      - name: Checkout Source Code (for headers)
+        uses: actions/checkout@v4
+
+      - name: Package Linux Asset
+        id: package_linux
+        run: |
+          RELEASE_TAG=${GITHUB_REF##*/v}
+          PACKAGE_NAME="core-${RELEASE_TAG}-linux.tar.gz"
+          
+          mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
+          
+          cp build-linux/corecdtl-ctl core_release_package/bin/
+          cp build-linux/CoreCDTL.dylib core_release_package/lib/
+          cp build-linux/libjitcore.dylib core_release_package/lib/
+          
+          cp headers/corecdtl.h core_release_package/include/
+          cp headers/libjitcore.h core_release_package/include/
+
+          tar -czf $PACKAGE_NAME -C core_release_package .
+          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Upload Linux Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.package_linux.outputs.package_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package macOS Asset
+        id: package_darwin
+        run: |
+          RELEASE_TAG=${GITHUB_REF##*/v}
+          PACKAGE_NAME="core-${RELEASE_TAG}-darwin.zip"
+          
+          mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
+          
+          cp build-macos/corecdtl-ctl core_release_package/bin/
+          cp build-macos/CoreCDTL.dylib core_release_package/lib/
+          cp build-macos/libjitcore.dylib core_release_package/lib/
+          
+          cp headers/corecdtl.h core_release_package/include/
+          cp headers/libjitcore.h core_release_package/include/
+
+          zip -jr $PACKAGE_NAME core_release_package/*
+          echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
+
+      - name: Upload macOS Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ steps.package_darwin.outputs.package_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
