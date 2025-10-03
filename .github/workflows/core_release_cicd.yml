@@ -84,11 +84,7 @@ jobs:
         run: |
           RELEASE_TAG=${GITHUB_REF##*/v}
           PACKAGE_NAME="core-${RELEASE_TAG}-linux.tar.gz"
-          mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
-          
-          ls -l
-          echo "Where am I"
-          pwd
+          mkdir -p core_release_package/lib core_release_package/bin
           
           cp downloaded_artifacts/core-linux/libcorecdtl.so core_release_package/lib/
           cp downloaded_artifacts/core-linux/corecdtl-ctl core_release_package/bin/
@@ -114,7 +110,7 @@ jobs:
         run: |
           RELEASE_TAG=${GITHUB_REF##*/v}
           PACKAGE_NAME="core-${RELEASE_TAG}-darwin.zip"
-          mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
+          mkdir -p core_release_package/lib core_release_package/bin
           cp downloaded_artifacts/core-macos/corecdtl-ctl core_release_package/bin/
           cp downloaded_artifacts/core-macos/libcorecdtl.dylib core_release_package/lib/
           cp downloaded_artifacts/core-macos/jit-lib/libjitcore.dylib core_release_package/lib/
