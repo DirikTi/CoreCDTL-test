@@ -40,7 +40,8 @@ jobs:
         run: |
           mkdir -p build
           cd build
-          cp -r public_headers build/headers
+          mkdir -p headers
+          cp -r ../public_headers/* headers/
 
           cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
           make
