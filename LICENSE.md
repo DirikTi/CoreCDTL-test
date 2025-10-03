@@ -1,6 +1,6 @@
 # CoreCDTL Non-Commercial Ecosystem License
 
-Copyright (c) [Current Year], [Your Name/Organization Name] (The Licensor)
+Copyright (c) 2025, Ertuğrul DİRİK (The Licensor)
 All rights reserved.
 
 This license governs the use of the core software known as **CoreCDTL** (the "Software"). The fundamental mission of the Software is to provide a high-performance, low-energy-footprint runtime environment, based on the principles of **absolute reliability, excellence, and resource efficiency**. The Software is designed to foster a **developer unity** and an open ecosystem, not direct competition.

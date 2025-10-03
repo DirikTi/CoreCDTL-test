@@ -2,12 +2,15 @@
   <img src="corecdtl_logo.png" alt="CoreCDTL Logo" width="250"/>
 </div>
 
-[![CI Build Status](https://img.shields.io/github/actions/workflow/status/CoreCDTL/CoreCDTL/ci.yml?branch=main&label=Build)](https://github.com/CoreCDTL/CoreCDTL/actions)
+<div align="center">
+
+[![Build Status](https://img.shields.io/github/actions/workflow/status/CoreCDTL/CoreCDTL/ci.yml?branch=main&label=Build)](https://github.com/CoreCDTL/CoreCDTL/actions)
 [![License](https://img.shields.io/badge/License-Non--Commercial-red)](LICENSE.md)
 [![CMake](https://img.shields.io/badge/CMake-3.16%2B-blue.svg)](https://cmake.org/)
-[![Project Status](https://img.shields.io/badge/Status-Beta-orange.svg)](https://github.com/CoreCDTL/CoreCDTL/issues)
-[![Version](https://img.shields.io/badge/Version-0.1.0%20Beta-informational.svg)](https://github.com/CoreCDTL/CoreCDTL/releases)
+[![Status](https://img.shields.io/badge/Status-Beta-orange.svg)](https://github.com/CoreCDTL/CoreCDTL/issues)
+[![Version](https://img.shields.io/badge/Version-0.1.0%20Beta-informational.svg)](CHANGELOG.md)
 
+</div>
 
 # CoreCDTL – Core C Development Toolchain Library
 
@@ -78,9 +81,9 @@ CoreCDTL is the foundational component of a multi-repository ecosystem. It is no
 
 All comprehensive guides, API references, build instructions, and contribution guidelines are hosted on the project's centralized documentation site.
 
-* **[Installation Guide & CLI Setup](https://docs.yourproject.org/install/) ↗** — Instructions for production users, operators, and CLI tool setup.
-* **[Developer Guide](https://docs.yourproject.org/developer/) ↗** — Full documentation on system dependencies (LLVM), CMake usage, debugging, and building from source.
-* **[API Reference](https://docs.yourproject.org/api/) ↗** — Full documentation on all exposed core functions, versions, and metadata.
+* **[Installation Guide & CLI Setup](https://docs.corecdtl.org/install/) ↗** — Instructions for production users, operators, and CLI tool setup.
+* **[Developer Guide](https://docs.corecdtl.com/developer/) ↗** — Full documentation on system dependencies (LLVM), CMake usage, debugging, and building from source.
+* **[API Reference](https://docs.corecdtl.com/api/) ↗** — Full documentation on all exposed core functions, versions, and metadata.
 
 ---
 
@@ -96,6 +99,8 @@ The CoreCDTL ecosystem is modular. Your application development process will pri
 ## Contributing
 Contribution guidelines are part of the centralized documentation.
 For now, discussions and feedback are welcome via issues and community channels.
+
+[CONTRIBUTING.md](CONTRIBUTING.md)
 
 * **[Contribution Guidelines](https://docs.corecdtl.com/core/contributing/) ↗**
 

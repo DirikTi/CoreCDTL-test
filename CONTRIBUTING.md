@@ -51,7 +51,7 @@ All contributions must be validated with **unit tests**.
 * Run the full suite locally before submitting:
   ```bash
   make runTests
-   ctest --output-on-failure
+  ctest --output-on-failure
   ```
 * **Zero test failures are required** before a PR will be considered.
 * PRs will automatically trigger the test suite via **CI/CD pipelines**. If tests fail, the PR cannot be merged.
@@ -63,13 +63,13 @@ All contributions must be validated with **unit tests**.
 
 All code must follow these specific naming conventions:
 
-| Item Type                   | CoreCDTL Standard Rule        | Examples                                |
-| --------------------------- | ----------------------------- | --------------------------------------- |
-| Structures (struct)         | lowercase snake_case          | `struct field_info` (without typedef)     |
-| Enums (enum)                | UPPERCASE snake_case | `TYPE_INT`, `TYPE_FLOAT`                   |
-| Typedef'd Structures/Enums  | lowercase snake_case + _t     | `field_type_t`, `field_info_t`, `type_info_t` |
-| Typedef'd Function Pointers | lowercase snake_case + _fn    | `gateway_pm_get_list_fn`                  |
-| Macros/Constants            | UPPERCASE ALL_CAPS            | `GATEWAY_DTLS_MSG_LEN`, `EVENT_BUS_API`     |
+| Item Type                 | CoreCDTL Standard Rule        | Examples                                |
+|---------------------------| ----------------------------- | --------------------------------------- |
+| Structures (struct)       | lowercase snake_case          | `struct field_info` (without typedef)     |
+| Enums (enum)              | UPPERCASE snake_case | `TYPE_INT`, `TYPE_FLOAT`                   |
+| Typedef Structures/Enums  | lowercase snake_case + _t     | `field_type_t`, `field_info_t`, `type_info_t` |
+| Typedef Function Pointers | lowercase snake_case + _fn    | `gateway_pm_get_list_fn`                  |
+| Macros/Constants          | UPPERCASE ALL_CAPS            | `GATEWAY_DTLS_MSG_LEN`, `EVENT_BUS_API`     |
 
 **Note:** Functions taking no parameters **must** explicitly use `void` (e.g., void bus_shutdown(void)).
 
@@ -77,10 +77,9 @@ All code must follow these specific naming conventions:
 
 ## 4. Submitting a Pull Request (PR)
 
-1. **Fork** the repository and create your feature branch (e.g., `git checkout -b feature/my-new-feature`).
+1. **Fork** the repository and create your feature branch (e.g., `git checkout -b feature/my-new-feature`). Use descriptive names, avoid `temp` or `test`.
 2. Ensure your code adheres to **all coding standards and guidelines** described above.
 3. **Testing:** You are required to run local tests against any module you modified.
-
     * Unit tests must pass before submitting.
     * If adding new functionality, corresponding new tests are required.
 4. Open a PR targeting the `main` branch. Provide a clear description of the problem solved and the performance/reliability gains achieved.
