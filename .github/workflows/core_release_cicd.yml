@@ -86,13 +86,14 @@ jobs:
           
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
           
-          cp build-linux/corecdtl-ctl core_release_package/bin/
-          cp build-linux/CoreCDTL.dylib core_release_package/lib/
-          cp build-linux/libjitcore.dylib core_release_package/lib/
+          # DÜZELTME: Dosyaları artık build-linux/build/ klasöründen kopyalıyoruz
+          cp build-linux/build/corecdtl-ctl core_release_package/bin/
+          cp build-linux/build/CoreCDTL.dylib core_release_package/lib/
+          cp build-linux/build/libjitcore.dylib core_release_package/lib/
           
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
-
+          
           tar -czf $PACKAGE_NAME -C core_release_package .
           echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
@@ -111,14 +112,14 @@ jobs:
           
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
           
-          cp build-macos/corecdtl-ctl core_release_package/bin/
-          cp build-macos/CoreCDTL.dylib core_release_package/lib/
-          cp build-macos/libjitcore.dylib core_release_package/lib/
+          cp build-macos/build/corecdtl-ctl core_release_package/bin/
+          cp build-macos/build/CoreCDTL.dylib core_release_package/lib/
+          cp build-macos/build/libjitcore.dylib core_release_package/lib/
           
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
-
-          zip -jr $PACKAGE_NAME core_release_package/*
+          
+          zip -r $PACKAGE_NAME -C core_release_package .
           echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
       - name: Upload macOS Asset
