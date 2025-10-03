@@ -83,9 +83,9 @@ jobs:
           
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
           
-          cp downloaded_artifacts/core-build-Linux/build/corecdtl-ctl core_release_package/bin/
-          cp downloaded_artifacts/core-build-Linux/build/CoreCDTL.dylib core_release_package/lib/
-          cp downloaded_artifacts/core-build-Linux/build/libjitcore.dylib core_release_package/lib/
+          cp downloaded_artifacts/core-build-Linux/corecdtl-ctl core_release_package/bin/
+          cp downloaded_artifacts/core-build-Linux/libcorecdtl.so core_release_package/lib/ 
+          cp downloaded_artifacts/core-build-Linux/jit-lib/libjitcore.so core_release_package/lib/ # Loga göre bu dosya jit-lib içinde
           
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
@@ -108,9 +108,9 @@ jobs:
           
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
           
-          cp downloaded_artifacts/core-build-macOS/build/corecdtl-ctl core_release_package/bin/
-          cp downloaded_artifacts/core-build-macOS/build/CoreCDTL.dylib core_release_package/lib/
-          cp downloaded_artifacts/core-build-macOS/build/libjitcore.dylib core_release_package/lib/
+          cp downloaded_artifacts/core-build-macOS/corecdtl-ctl core_release_package/bin/
+          cp downloaded_artifacts/core-build-macOS/libcorecdtl.dylib core_release_package/lib/ 
+          cp downloaded_artifacts/core-build-macOS/jit-lib/libjitcore.dylib core_release_package/lib/ # jit-lib içinde olmalı
           
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
