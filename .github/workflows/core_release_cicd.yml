@@ -63,15 +63,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Download All Build Artifacts
+      # Linux ve macOS artifact'lerini ayrı ayrı doğru klasörlere indiriyoruz. (Düzeltildi)
+      - name: Download Linux Build Artifact
         uses: actions/download-artifact@v4
         with:
-          path: ./downloaded_artifacts
-      - name: Debug Artifact Directory Structure
-        run: |
-          echo "--- Downloaded Artifact Root ---"
-          ls -R ./downloaded_artifacts
-          echo "--------------------------------"
+          name: core-build-Linux
+          path: ./downloaded_artifacts/core-build-Linux
+
+      - name: Download macOS Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: core-build-macOS
+          path: ./downloaded_artifacts/core-build-macOS
+
       - name: Checkout Source Code (for headers)
         uses: actions/checkout@v4
 
@@ -83,12 +87,13 @@ jobs:
           
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
           
-          ls
-          ls ./downloaded_artifacts
+          # İzin sorununu çözmek için chmod ekliyoruz (Önceki Çözümümüz)
+          chmod +x downloaded_artifacts/core-build-Linux/corecdtl-ctl
           
+          # Doğru yolu kullanarak kopyalıyoruz (Debug Çıktısına Göre Düzeltildi)
           cp downloaded_artifacts/core-build-Linux/corecdtl-ctl core_release_package/bin/
           cp downloaded_artifacts/core-build-Linux/libcorecdtl.so core_release_package/lib/ 
-          cp downloaded_artifacts/core-build-Linux/jit-lib/libjitcore.so core_release_package/lib/ # Loga göre bu dosya jit-lib içinde
+          cp downloaded_artifacts/core-build-Linux/jit-lib/libjitcore.so core_release_package/lib/
           
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
@@ -111,9 +116,11 @@ jobs:
           
           mkdir -p core_release_package/lib core_release_package/bin core_release_package/include
           
+          chmod +x downloaded_artifacts/core-build-macOS/corecdtl-ctl
+          
           cp downloaded_artifacts/core-build-macOS/corecdtl-ctl core_release_package/bin/
           cp downloaded_artifacts/core-build-macOS/libcorecdtl.dylib core_release_package/lib/ 
-          cp downloaded_artifacts/core-build-macOS/jit-lib/libjitcore.dylib core_release_package/lib/ # jit-lib içinde olmalı
+          cp downloaded_artifacts/core-build-macOS/jit-lib/libjitcore.dylib core_release_package/lib/
           
           cp headers/corecdtl.h core_release_package/include/
           cp headers/libjitcore.h core_release_package/include/
