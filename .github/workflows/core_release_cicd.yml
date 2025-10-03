@@ -40,6 +40,8 @@ jobs:
         run: |
           mkdir -p build
           cd build
+          cp -r public_headers build/headers
+
           cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ ..
           make
 
@@ -89,8 +91,7 @@ jobs:
           cp downloaded_artifacts/core-linux/libcorecdtl.so core_release_package/lib/
           cp downloaded_artifacts/core-linux/corecdtl-ctl core_release_package/bin/
           cp downloaded_artifacts/core-linux/jit-lib/libjitcore.so core_release_package/lib/
-          cp headers/corecdtl.h core_release_package/include/
-          # cp headers/libjitcore.h core_release_package/include/
+          cp headers core_release_package/headers/
           tar -czf $PACKAGE_NAME -C core_release_package .
           echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
@@ -114,8 +115,7 @@ jobs:
           cp downloaded_artifacts/core-macos/corecdtl-ctl core_release_package/bin/
           cp downloaded_artifacts/core-macos/libcorecdtl.dylib core_release_package/lib/
           cp downloaded_artifacts/core-macos/jit-lib/libjitcore.dylib core_release_package/lib/
-          cp headers/corecdtl.h core_release_package/include/
-          # cp headers/libjitcore.h core_release_package/include/
+          cp headers core_release_package/headers/
           cd core_release_package
           zip -r "../$PACKAGE_NAME" .
           cd ..
