@@ -75,21 +75,6 @@ jobs:
         with:
           name: core-linux
           path: ./downloaded_artifacts/core-linux
-      - name: Debug Artifact Paths
-        run: |
-          echo "Current directory:"
-          pwd
-          echo "Contents of downloaded artifact:"
-          ls -l
-          ls -R downloaded_artifacts/core-linux
-      - name: Download macOS Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: core-macos
-          path: ./downloaded_artifacts/core-macos
-      - name: Checkout Source Code
-        uses: actions/checkout@v4
-
       - name: Package Linux Asset
         id: package_linux
         run: |
@@ -115,7 +100,11 @@ jobs:
           files: ${{ steps.package_linux.outputs.package_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: Download macOS Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: core-macos
+          path: ./downloaded_artifacts/core-macos
       - name: Package macOS Asset
         id: package_darwin
         run: |
