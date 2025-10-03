@@ -86,10 +86,12 @@ jobs:
           PACKAGE_NAME="core-${RELEASE_TAG}-linux.tar.gz"
           mkdir -p core_release_package/lib core_release_package/bin
           
-          cp downloaded_artifacts/core-linux/libcorecdtl.so core_release_package/lib/
           cp downloaded_artifacts/core-linux/corecdtl-ctl core_release_package/bin/
+          
+          cp downloaded_artifacts/core-linux/libcorecdtl.so core_release_package/lib/
           cp downloaded_artifacts/core-linux/jit-lib/libjitcore.so core_release_package/lib/
-          cp -r downloaded_artifacts/core-linux/headers core_release_package/headers/
+          
+          cp -r downloaded_artifacts/core-linux/headers/* core_release_package/headers/
           tar -czf $PACKAGE_NAME -C core_release_package .
           echo "package_name=$PACKAGE_NAME" >> $GITHUB_OUTPUT
 
@@ -111,10 +113,14 @@ jobs:
           RELEASE_TAG=${GITHUB_REF##*/v}
           PACKAGE_NAME="core-${RELEASE_TAG}-darwin.zip"
           mkdir -p core_release_package/lib core_release_package/bin
+          
           cp downloaded_artifacts/core-macos/corecdtl-ctl core_release_package/bin/
+          
           cp downloaded_artifacts/core-macos/libcorecdtl.dylib core_release_package/lib/
           cp downloaded_artifacts/core-macos/jit-lib/libjitcore.dylib core_release_package/lib/
-          cp -r downloaded_artifacts/core-macos/headers core_release_package/headers/
+          
+          cp -r downloaded_artifacts/core-macos/headers/* core_release_package/headers/
+          
           cd core_release_package
           zip -r "../$PACKAGE_NAME" .
           cd ..
